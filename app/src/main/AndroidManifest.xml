@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".YTIndexApp"
         android:allowBackup="true"
         android:label="YT Index"
         android:supportsRtl="true"

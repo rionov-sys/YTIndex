@@ -10,11 +10,8 @@
 # Linux: /home/NAMA_USER/Android/Sdk
 sdk.dir=
 
-# YouTube Data API v3 Key (Google Cloud Console)
-# Batasi key ke package 'com.example.ytindex' dan SHA-1 debug Anda
-YOUTUBE_API_KEY=YOUR_YOUTUBE_API_KEY_HERE
-
 # Supabase Project Configuration
 # Diambil dari dashboard Supabase: Project Settings -> API
 SUPABASE_URL=https://your-project-id.supabase.co
 SUPABASE_ANON_KEY=your_supabase_anon_public_key_here
+

@@ -7,12 +7,16 @@ Aplikasi Android modern berbasis **Kotlin** dan **Jetpack Compose** untuk mencar
 ## 📌 Apa yang Dilakukan Aplikasi Ini?
 
 YT Index memudahkan pengguna menemukan konten video YouTube berkualitas dengan kriteria spesifik:
-- **Filter 1 Tahun Terakhir**: Hanya menampilkan video yang diunggah dalam kurun waktu 365 hari terakhir (`publishedAfter`), memastikan hasil pencarian selalu relevan dan mutakhir.
-- **Urutan Paling Relevan**: Mempertahankan pemeringkatan relevansi resmi dari YouTube Data API v3.
-- **Batas Hasil Fleksibel**: Jumlah hasil pencarian dapat disesuaikan secara dinamis oleh pengguna melalui slider (1–50 video, default 10 video).
-- **Antarmuka Bersih & Responsif**: Kartu video menampilkan thumbnail rasio 16:9, judul video (entitas HTML telah didekode), nama channel pembuat, dan tanggal publikasi.
+- **Autentikasi Akun (Supabase Auth)**: Pengguna dapat mendaftar dan masuk menggunakan email/password, dengan sesi login yang tersimpan aman secara otomatis.
+- **Pencarian Aman via Supabase Edge Function**: Aplikasi Android tidak memanggil langsung YouTube API. Pemanggilan dilakukan melalui Edge Function `youtube-search` menggunakan token sesi JWT pengguna.
+- **Cache Server-Side 24 Jam**: Hasil pencarian di-cache di tabel `search_cache` Supabase selama 24 jam untuk menghemat kuota YouTube Data API v3.
+- **Penanganan Kuota Cerdas**: Jika kuota harian YouTube habis (HTTP 429), aplikasi menampilkan pesan informatif dalam Bahasa Indonesia.
+- **4 Tab Navigasi Bawah (Bottom Navigation)**:
+  1. **Cari**: Input kata kunci, slider jumlah hasil (1–50 video), badge peringkat relevansi (#1, #2...), thumbnail 16:9, judul terdekode, nama channel, tanggal rilis, dan tombol bookmark cepat.
+  2. **Tersimpan**: Daftar video favorit yang tersimpan di tabel PostgreSQL `bookmarks` (RLS terisolasi per pengguna).
+  3. **Riwayat**: Daftar riwayat pencarian dari tabel `search_history`, kemampuan mencari ulang dengan satu ketukan, dan tombol hapus semua riwayat dengan dialog konfirmasi.
+  4. **Pengaturan**: Slider jumlah hasil default pencarian (tersimpan di DataStore), preferensi tema (Ikuti Sistem / Mode Terang / Mode Gelap), informasi email akun aktif, dan tombol keluar akun (logout).
 - **Integrasi Langsung**: Ketuk kartu video mana pun untuk langsung membukanya di aplikasi YouTube atau peramban bawaan.
-- **Dukungan Backend Supabase**: Skema database PostgreSQL siap pakai untuk menyimpan riwayat pencarian (*search history*) dan video favorit (*bookmark*), dilengkapi Row Level Security (RLS) serta Deno Edge Functions.
 
 ---
 
@@ -25,32 +29,33 @@ YTIndex/
 ├── app/                            # Modul aplikasi Android (Kotlin + Jetpack Compose)
 │   ├── src/main/AndroidManifest.xml
 │   ├── src/main/java/com/example/ytindex/
-│   │   ├── MainActivity.kt         # Entry point aplikasi & tema Material 3
+│   │   ├── MainActivity.kt         # Entry point aplikasi & pengamat tema dinamis
+│   │   ├── YTIndexApp.kt           # Application class
 │   │   ├── data/
-│   │   │   ├── Models.kt           # Data class respons API & model domain UI
-│   │   │   ├── YouTubeApi.kt       # Retrofit service interface YouTube Data API v3
-│   │   │   └── VideoRepository.kt  # Logika filter 1 tahun, relevansi, dan kuota
+│   │   │   ├── Models.kt           # Model DTO & UI
+│   │   │   ├── local/              # DataStore Preferences (tema & limit default)
+│   │   │   ├── remote/             # SupabaseClientProvider
+│   │   │   └── repository/         # Auth, Search, Bookmark, History Repository
 │   │   └── ui/
-│   │       ├── SearchScreen.kt     # Tampilan Compose (Search bar, slider, list)
-│   │       └── SearchViewModel.kt  # Pengelolaan state (StateFlow) & error handling
+│   │       ├── MainScreen.kt       # Scaffold dengan 4-tab bottom navigation
+│   │       ├── auth/               # Layar & ViewModel Autentikasi (Login/Register)
+│   │       ├── search/             # Layar & ViewModel Pencarian
+│   │       ├── bookmarks/          # Layar & ViewModel Video Tersimpan
+│   │       ├── history/            # Layar & ViewModel Riwayat Pencarian
+│   │       ├── settings/           # Layar & ViewModel Pengaturan Tema & Akun
+│   │       ├── components/         # VideoCard, BottomNavBar, StateIndicators
+│   │       ├── navigation/         # NavHost & Auth Guard
+│   │       └── theme/              # Color, Type, Theme (Light/Dark/System)
 │   └── build.gradle.kts            # Konfigurasi dependensi modul app
 ├── supabase/                       # Konfigurasi backend Supabase
 │   ├── config.toml                 # Konfigurasi Supabase CLI
 │   ├── migrations/                 # Migrasi skema database PostgreSQL & RLS
 │   │   └── 20261010000000_init_ytindex_schema.sql
 │   ├── functions/                  # Deno Edge Functions
-│   │   └── search-indexer/index.ts
-│   └── README.md                   # Panduan teknis Supabase
+│   │   └── youtube-search/         # Edge function pencarian YouTube & caching
+│   └── README.md                   # Panduan teknis Supabase & pengujian
 ├── design/                         # Referensi desain UI/UX yang diekspor dari Stitch
-│   ├── screens/                    # Mockup dan tangkapan layar UI
-│   ├── tokens/                     # Design tokens (warna, font, spacing JSON)
-│   │   └── design_tokens.json
-│   ├── specs/                      # Spesifikasi interaksi UI
-│   └── README.md                   # Dokumentasi panduan desain
 ├── docs/                           # Dokumentasi teknis proyek
-│   ├── ARCHITECTURE.md             # Arsitektur detail MVVM & Compose
-│   ├── SETUP.md                    # Panduan setup developer & rahasia
-│   └── WORKFLOW.md                 # Alur branching Git & Conventional Commits
 ├── .github/
 │   └── workflows/
 │       └── android.yml             # Alur kerja CI/CD GitHub Actions
@@ -67,14 +72,14 @@ YTIndex/
 
 ### Cabang Git (Branches)
 - **`main`**: Cabang utama yang stabil (*production-ready*).
-- **`feature/*`**: Cabang kerja untuk setiap fitur baru (contoh: `feature/supabase-auth`, `feature/offline-cache`, `feature/video-player`).
+- **`feature/*`**: Cabang kerja untuk setiap fitur baru (contoh: `feature/supabase-architecture-and-deps`).
 
 ### Format Pesan Commit (Conventional Commits)
 Gunakan format standar berikut pada setiap commit:
-- `feat:` Penambahan fitur baru (contoh: `feat: tambahkan penyimpanan bookmark ke Supabase`)
-- `fix:` Perbaikan bug (contoh: `fix: tangani error kuota 403 YouTube API`)
-- `chore:` Pemeliharaan, dependensi, konfigurasi build/CI (contoh: `chore: initial project setup`)
-- `docs:` Pembaruan atau penambahan dokumentasi (contoh: `docs: perbarui panduan setup`)
+- `feat:` Penambahan fitur baru (contoh: `feat: implement Supabase auth and edge function search`)
+- `fix:` Perbaikan bug (contoh: `fix: add gradle.properties with AndroidX enabled`)
+- `chore:` Pemeliharaan, dependensi, konfigurasi build/CI
+- `docs:` Pembaruan atau penambahan dokumentasi
 
 ---
 
@@ -84,13 +89,15 @@ Kunci rahasia dan konfigurasi lingkungan **HANYA** dibaca dari dua sumber:
 1. **Lokal**: File `local.properties` di root direktori proyek.
 2. **CI / GitHub Actions**: Repository Secrets (`Settings > Secrets and variables > Actions`).
 
-### Daftar Kunci yang Dibutuhkan:
+### Daftar Kunci yang Dibutuhkan Aplikasi Android:
 
 | Variabel | Deskripsi | Diperlukan Di |
 |---|---|---|
-| `YOUTUBE_API_KEY` | API Key dari Google Cloud Console dengan hak akses YouTube Data API v3 | `local.properties` & GitHub Secrets |
 | `SUPABASE_URL` | Endpoint URL project Supabase Anda (`https://<project-id>.supabase.co`) | `local.properties` & GitHub Secrets |
 | `SUPABASE_ANON_KEY` | Public Anon Key dari dashboard Supabase untuk autentikasi klien aman | `local.properties` & GitHub Secrets |
+
+> [!NOTE]
+> `YOUTUBE_API_KEY` **TIDAK** lagi disimpan pada aplikasi Android. Kunci ini hanya dikonfigurasikan di sisi backend Supabase Edge Function (`supabase secrets set YOUTUBE_API_KEY=...`), menjaga API key sepenuhnya terlindungi dari ekstraksi APK.
 
 > [!CAUTION]
 > **ATURAN KEAMANAN WAJIB**:
@@ -102,38 +109,33 @@ Kunci rahasia dan konfigurasi lingkungan **HANYA** dibaca dari dua sumber:
 
 ## 🚀 Panduan Setup & Menjalankan Aplikasi
 
-### 1. Dapatkan YouTube API Key
-1. Masuk ke [Google Cloud Console](https://console.cloud.google.com).
-2. Buat project baru atau pilih project yang ada.
-3. Buka **APIs & Services > Library**, cari dan aktifkan **YouTube Data API v3**.
-4. Buka **APIs & Services > Credentials**, pilih **Create Credentials > API key**.
-5. *(Disarankan)* Berikan restriction ke package Android: `com.example.ytindex` beserta fingerprint SHA-1 debug sertifikat Anda.
-
-### 2. Konfigurasi `local.properties`
-Salin template dan isi dengan kredensial Anda:
+### 1. Konfigurasi `local.properties`
+Salin template dan isi dengan kredensial Supabase Anda:
 ```bash
 cp local.properties.example local.properties
 ```
 Buka file `local.properties` dan lengkapi:
 ```properties
 sdk.dir=/path/ke/Android/Sdk
-YOUTUBE_API_KEY=AIzaSy...
 SUPABASE_URL=https://your-project-id.supabase.co
 SUPABASE_ANON_KEY=your_supabase_anon_public_key
 ```
 
-### 3. Menjalankan di Android Studio
+### 2. Menjalankan di Android Studio
 1. Buka folder proyek ini di **Android Studio**.
 2. Biarkan Gradle melakukan sinkronisasi otomatis (*Gradle Sync*).
 3. Pilih emulator Android atau perangkat fisik (USB Debugging).
 4. Tekan tombol **Run (Shift + F10)**.
 
-### 4. Menjalankan via Terminal (CLI)
+### 3. Menjalankan via Terminal (CLI)
 ```bash
+# Menjalankan unit tests
+./gradlew test
+
 # Kompilasi APK debug
 ./gradlew assembleDebug
 
-# Menjalankan pengujian Lint
+# Menjalankan pemeriksaan Lint
 ./gradlew lint
 
 # File APK yang dihasilkan:
