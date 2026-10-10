@@ -1,5 +1,6 @@
 package com.example.ytindex.ui.auth
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ytindex.data.repository.AuthRepository
@@ -7,6 +8,7 @@ import io.github.jan.supabase.auth.status.SessionStatus
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -32,10 +34,14 @@ class AuthViewModel(
     init {
         // Pantau status sesi Supabase untuk mendeteksi login otomatis
         viewModelScope.launch {
-            authRepository.sessionStatus.collect { status ->
-                val authenticated = status is SessionStatus.Authenticated
-                _state.update { it.copy(isAuthenticated = authenticated) }
-            }
+            authRepository.sessionStatus
+                .catch { e ->
+                    Log.w("AuthViewModel", "Gagal memantau session status: ${e.message}")
+                }
+                .collect { status ->
+                    val authenticated = status is SessionStatus.Authenticated
+                    _state.update { it.copy(isAuthenticated = authenticated) }
+                }
         }
     }
 
