@@ -1,14 +1,17 @@
 # Supabase Edge Functions - YT Index
 
-Folder ini berisi Edge Functions berbasis Deno TypeScript yang dideploy ke Supabase.
+Folder ini berisi Edge Functions berbasis Deno TypeScript yang dideploy ke Supabase untuk menangani logika pencarian YouTube yang aman, terautentikasi, dan hemat kuota.
 
 ## Struktur
 
 ```
 supabase/functions/
+├── deno.json
 ├── README.md
-└── search-indexer/
-    └── index.ts     # Edge Function untuk caching hasil pencarian & analitik
+└── youtube-search/
+    ├── index.ts     # Edge Function utama: JWT auth, caching, YouTube API & rate limit mapping
+    ├── test.sh      # Script testing via curl (Bash)
+    └── test.ps1     # Script testing via PowerShell
 ```
 
 ## Menjalankan Secara Lokal
@@ -16,15 +19,22 @@ supabase/functions/
 Untuk menguji edge function di komputer lokal:
 
 ```bash
-# Pastikan Supabase CLI terpasang (supabase start sudah berjalan)
-supabase functions serve search-indexer --no-verify-jwt
+# Jalankan Supabase lokal
+supabase start
+
+# Jalankan Edge Function secara lokal
+supabase functions serve youtube-search --no-verify-jwt --env-file ../../.env.local
 ```
 
 ## Deploy ke Supabase Cloud
 
 ```bash
-supabase functions deploy search-indexer --project-ref <PROJECT_ID>
+# 1. Atur YouTube Data API Key di secret Supabase Cloud
+supabase secrets set YOUTUBE_API_KEY=AIzaSy...
+
+# 2. Deploy function
+supabase functions deploy youtube-search
 ```
 
 > [!WARNING]
-> Jangan pernah meng-commit `service_role` key ke dalam file kode atau repository! Simpan token sensitif hanya di environment secrets Supabase Dashboard (`supabase secrets set KEY=VALUE`).
+> Jangan pernah meng-commit `service_role` key ke dalam file kode atau repositori Git! Simpan token sensitif hanya di environment secrets Supabase Dashboard atau secret CLI.

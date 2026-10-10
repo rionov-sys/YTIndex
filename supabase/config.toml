@@ -26,3 +26,6 @@ enable_signup = true
 
 [analytics]
 enabled = false
+
+[functions.youtube-search]
+verify_jwt = true

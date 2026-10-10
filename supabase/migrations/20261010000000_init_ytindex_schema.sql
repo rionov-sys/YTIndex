@@ -1,67 +1,104 @@
 -- ==============================================================================
--- Inisialisasi Skema Database YT Index (Supabase Migration)
+-- Migrasi Database Supabase: YT Index
+-- Tabel: bookmarks, search_history, search_cache
+-- RLS: Diaktifkan di seluruh tabel dengan policy berbasis auth.uid()
 -- ==============================================================================
 
--- 1. Tabel Riwayat Pencarian (search_history)
+-- 1. Tabel Bookmarks (Menyimpan video favorit pengguna)
+create table if not exists public.bookmarks (
+    id uuid primary key default gen_random_uuid(),
+    user_id uuid references auth.users(id) on delete cascade default auth.uid(),
+    video_id text not null,
+    title text,
+    channel text,
+    thumbnail_url text,
+    published_at timestamptz,
+    url text,
+    created_at timestamptz default now(),
+    unique(user_id, video_id)
+);
+
+-- Index untuk performa query bookmark per user diurutkan dari yang terbaru
+create index if not exists idx_bookmarks_user_created_at 
+    on public.bookmarks (user_id, created_at desc);
+
+-- Aktifkan Row Level Security (RLS) pada tabel bookmarks
+alter table public.bookmarks enable row level security;
+
+-- Policy: Hanya user yang terautentikasi dapat membaca bookmark miliknya
+create policy "Users can select own bookmarks"
+    on public.bookmarks
+    for select
+    to authenticated
+    using (user_id = auth.uid());
+
+-- Policy: Hanya user yang terautentikasi dapat menambahkan bookmark untuk dirinya
+create policy "Users can insert own bookmarks"
+    on public.bookmarks
+    for insert
+    to authenticated
+    with check (user_id = auth.uid());
+
+-- Policy: Hanya user yang terautentikasi dapat menghapus bookmark miliknya
+create policy "Users can delete own bookmarks"
+    on public.bookmarks
+    for delete
+    to authenticated
+    using (user_id = auth.uid());
+
+
+-- 2. Tabel Search History (Menyimpan riwayat kata kunci pencarian)
 create table if not exists public.search_history (
     id uuid primary key default gen_random_uuid(),
+    user_id uuid references auth.users(id) on delete cascade default auth.uid(),
     query text not null,
-    limit_count integer default 10,
-    result_count integer default 0,
-    created_at timestamp with time zone default timezone('utc'::text, now()) not null
+    result_limit int,
+    created_at timestamptz default now()
 );
 
--- Index pencarian berdasarkan query dan tanggal
-create index if not exists idx_search_history_created_at on public.search_history (created_at desc);
-create index if not exists idx_search_history_query on public.search_history (query);
+-- Index untuk performa riwayat pencarian per user diurutkan dari yang terbaru
+create index if not exists idx_search_history_user_created_at 
+    on public.search_history (user_id, created_at desc);
 
--- Aktifkan RLS
+-- Aktifkan Row Level Security (RLS) pada tabel search_history
 alter table public.search_history enable row level security;
 
--- Policy: Izinkan anonim dan authenticated membaca serta menambah riwayat
-create policy "Allow read access for all"
+-- Policy: Hanya user yang terautentikasi dapat membaca riwayat miliknya
+create policy "Users can select own search history"
     on public.search_history
     for select
-    using (true);
+    to authenticated
+    using (user_id = auth.uid());
 
-create policy "Allow insert access for all"
+-- Policy: Hanya user yang terautentikasi dapat menambah riwayat untuk dirinya
+create policy "Users can insert own search history"
     on public.search_history
     for insert
-    with check (true);
+    to authenticated
+    with check (user_id = auth.uid());
+
+-- Policy: Hanya user yang terautentikasi dapat menghapus riwayat miliknya
+create policy "Users can delete own search history"
+    on public.search_history
+    for delete
+    to authenticated
+    using (user_id = auth.uid());
 
 
--- 2. Tabel Bookmark Video (bookmarked_videos)
-create table if not exists public.bookmarked_videos (
-    id uuid primary key default gen_random_uuid(),
-    video_id text not null,
-    title text not null,
-    channel_title text not null,
-    published_date text not null,
-    thumbnail_url text,
-    video_url text not null,
-    created_at timestamp with time zone default timezone('utc'::text, now()) not null,
-    constraint unq_video_id unique (video_id)
+-- 3. Tabel Search Cache (Cache respons YouTube API bersama)
+-- Cache key: query lowercase yang sudah di-trim + tanggal bucket (YYYY-MM-DD)
+create table if not exists public.search_cache (
+    cache_key text primary key,
+    payload jsonb not null,
+    created_at timestamptz default now()
 );
 
--- Index bookmark berdasarkan video_id & tanggal
-create index if not exists idx_bookmarked_videos_video_id on public.bookmarked_videos (video_id);
-create index if not exists idx_bookmarked_videos_created_at on public.bookmarked_videos (created_at desc);
+-- Index pembersihan / pemantauan cache berdasarkan waktu pembuatan
+create index if not exists idx_search_cache_created_at 
+    on public.search_cache (created_at desc);
 
--- Aktifkan RLS
-alter table public.bookmarked_videos enable row level security;
-
--- Policy: Izinkan read, insert, delete bookmark
-create policy "Allow read access for bookmarks"
-    on public.bookmarked_videos
-    for select
-    using (true);
-
-create policy "Allow insert access for bookmarks"
-    on public.bookmarked_videos
-    for insert
-    with check (true);
-
-create policy "Allow delete access for bookmarks"
-    on public.bookmarked_videos
-    for delete
-    using (true);
+-- Aktifkan Row Level Security (RLS) pada search_cache
+-- Penting: TIDAK ADA policy yang dibuat. 
+-- Dengan RLS aktif tanpa policy, HANYA service_role (Edge Function) yang dapat membaca dan menulis.
+-- Klien anon dan authenticated tidak memiliki akses langsung sama sekali.
+alter table public.search_cache enable row level security;
