@@ -1,8 +1,8 @@
-// Follow this setup guide to integrate the Deno language server with your editor:
-// https://deno.land/manual/getting_started/setup_your_environment
-// This code is designed to run in Supabase Edge Functions (Deno runtime).
-
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+// Setup type definitions for Supabase Edge Functions (Deno runtime)
+// Ref: https://supabase.com/docs/guides/functions
+declare const Deno: {
+  serve: (handler: (req: Request) => Promise<Response> | Response) => void;
+};
 
 interface RequestPayload {
   query?: string;
@@ -10,7 +10,7 @@ interface RequestPayload {
   resultsCount?: number;
 }
 
-serve(async (req: Request) => {
+Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", {
       headers: {
