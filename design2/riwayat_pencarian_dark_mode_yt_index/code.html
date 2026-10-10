@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><title>YT Index</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "on-secondary": "#003731",
+          "on-surface-variant": "#94a3b8",
+          "inverse-surface": "#dae2fd",
+          "on-tertiary-fixed-variant": "#2f2ebe",
+          "error-container": "#4c1117",
+          "background": "#0b1326",
+          "surface-container-high": "#273148",
+          "surface-dim": "#0b1326",
+          "primary-fixed": "#e0e0ff",
+          "on-surface": "#f1f5f9",
+          "on-primary-fixed-variant": "#2f3aa3",
+          "surface-bright": "#31394d",
+          "error": "#ffb4ab",
+          "on-error-container": "#fca5a5",
+          "surface-container-low": "#131b2e",
+          "tertiary": "#c0c1ff",
+          "on-tertiary-fixed": "#07006c",
+          "primary-container": "#818cf8",
+          "surface-tint": "#bdc2ff",
+          "tertiary-fixed": "#e1e0ff",
+          "inverse-primary": "#4953bc",
+          "inverse-on-surface": "#283044",
+          "secondary": "#2dd4bf",
+          "on-tertiary-container": "#0f00a2",
+          "on-primary-container": "#0f172a",
+          "tertiary-fixed-dim": "#c0c1ff",
+          "primary": "#bdc2ff",
+          "tertiary-container": "#8689ff",
+          "secondary-fixed": "#62fae3",
+          "surface-container-highest": "#2d3449",
+          "on-primary": "#131e8c",
+          "on-background": "#f1f5f9",
+          "surface-variant": "#1c253d",
+          "on-primary-fixed": "#000767",
+          "primary-fixed-dim": "#bdc2ff",
+          "outline-variant": "#2d3748",
+          "on-secondary-fixed": "#00201c",
+          "on-secondary-fixed-variant": "#005047",
+          "on-tertiary": "#1000a9",
+          "secondary-fixed-dim": "#3cddc7",
+          "surface": "#0b1326",
+          "on-secondary-container": "#042f2e",
+          "secondary-container": "#2dd4bf",
+          "surface-container": "#171f33",
+          "on-error": "#690005",
+          "outline": "#4b5563",
+          "surface-container-lowest": "#060e20"
+        },
+        borderRadius: {
+          "DEFAULT": "1rem",
+          "lg": "2rem",
+          "xl": "3rem",
+          "full": "9999px"
+        },
+        spacing: {
+          "space-xl": "2rem",
+          "space-md": "1rem",
+          "margin-tablet": "1.5rem",
+          "margin": "1rem",
+          "gutter-mobile": "0.75rem",
+          "space-xs": "0.25rem",
+          "space-sm": "0.5rem",
+          "gutter": "1rem",
+          "space-lg": "1.5rem"
+        },
+        fontFamily: {
+          "display-lg": ["Plus Jakarta Sans"],
+          "label-sm": ["Plus Jakarta Sans"],
+          "label-md": ["Plus Jakarta Sans"],
+          "headline-lg-mobile": ["Plus Jakarta Sans"],
+          "headline-md": ["Plus Jakarta Sans"],
+          "body-sm": ["Plus Jakarta Sans"],
+          "label-lg": ["Plus Jakarta Sans"],
+          "headline-lg": ["Plus Jakarta Sans"],
+          "body-lg": ["Plus Jakarta Sans"],
+          "headline-sm": ["Plus Jakarta Sans"],
+          "body-md": ["Plus Jakarta Sans"]
+        },
+        fontSize: {
+          "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+          "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+          "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+          "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+          "headline-md": ["22px", { "lineHeight": "28px", "fontWeight": "600" }],
+          "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+          "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+          "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+          "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+          "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+          "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+        }
+      }
+    }
+  };
+</script><style>@layer base { html, body { width: 100vw; margin: 0; padding: 0; } body { overscroll-behavior: none; } .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); } .pt-safe { padding-top: env(safe-area-inset-top, 0px); } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head><body class="bg-surface text-on-surface font-body-md text-body-md flex flex-col min-h-screen selection:bg-secondary-container selection:text-on-secondary-container"><header class="fixed top-0 w-full z-50 pt-safe bg-[#0b1326]/90 backdrop-blur-xl border-b border-[#1f293d]/60 shadow-[0_4px_20px_rgba(0,0,0,0.35)]"><div class="h-16 px-gutter flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><img alt="YT Index Logo" class="h-8 w-auto object-contain flex-shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1WAbIDyOqMdbcTxy2slJpY7AZOABffcRsUwlni2z7aIezv4F31rw1x8mh9ceIQlCb0_LLJTDrUck9pc-1iAbPLasNv0J8dPGhcoou_pekHiFRKrkY9rg0mPXyK-v9hGgnJWX45LDwZzQPPe48to9P9BwbscBFU7dlUZMoqklMcGbEoDOmn4_2sQEUetkZXHOKrUMGWWZXcarMJFJj8wDGHPfLDYj0eB96gpGY-uKnfQ4hKapCXKVjalIJw"/><div class="flex flex-col min-w-0"><span class="font-headline-sm text-base text-on-surface font-bold tracking-tight truncate leading-tight">YT Index</span><span class="font-label-sm text-label-sm text-on-surface-variant truncate leading-tight">Riwayat</span></div></div><div class="flex items-center gap-space-xs flex-shrink-0"><button aria-label="Buka Profil" class="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full active:opacity-80 transition-opacity"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-primary-container/80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtJwL3871IZx8uNtUGcn8CQEY0EZ13F-wJkcOxp7rvYM43c2pH6H4skbEiO1YrGisnFhMQCSgdjBJ0XaPII8cHcHoCZ5UGvyMnHNPJev4eUH9cNGVJw05FvaXheLhDGGei00U0IlcXAtGtQASkrj0jZbRDGtc28FpkOsLip3Rv0yfmEOlNgtjR5f3AOcSl-7zm868P7MEX2xqnIvE9I6OStYR9g0KQjb0NludDtXYcx7hj2FRYR6FL"/></button></div></div></header><main class="flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<script>
+    (() => {
+      const activeTab = document.querySelector('nav a[data-path="riwayat"]');
+      if (activeTab) {
+        document.querySelectorAll('nav a').forEach(a => {
+          const pill = a.querySelector('.nav-pill');
+          const icon = a.querySelector('.nav-icon');
+          const label = a.querySelector('.nav-label');
+          if (pill) pill.classList.remove('bg-primary-container');
+          if (icon) {
+            icon.classList.remove('text-on-primary-container');
+            icon.style.fontVariationSettings = "'FILL' 0";
+            icon.classList.add('text-on-surface-variant');
+          }
+          if (label) {
+            label.classList.remove('text-primary-container', 'font-label-md');
+            label.classList.add('text-on-surface-variant', 'font-label-sm');
+          }
+        });
+        const pill = activeTab.querySelector('.nav-pill');
+        const icon = activeTab.querySelector('.nav-icon');
+        const label = activeTab.querySelector('.nav-label');
+        if (pill) pill.classList.add('bg-primary-container');
+        if (icon) {
+          icon.classList.remove('text-on-surface-variant');
+          icon.classList.add('text-on-primary-container');
+          icon.style.fontVariationSettings = "'FILL' 1";
+        }
+        if (label) {
+          label.classList.remove('text-on-surface-variant', 'font-label-sm');
+          label.classList.add('text-primary-container', 'font-label-md');
+        }
+      }
+    })();
+  </script>
+<div class="px-gutter pt-space-md pb-space-xs flex items-center justify-between gap-space-sm">
+<div class="flex flex-col min-w-0">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface tracking-tight">Riwayat Pencarian</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Pencarian kata kunci yang pernah Anda lakukan</p>
+</div>
+<button aria-label="Hapus semua riwayat pencarian" class="min-h-[38px] px-3.5 py-1.5 rounded-full bg-error-container text-on-error-container border border-red-900/40 flex items-center gap-1.5 shadow-sm active:scale-95 transition-all flex-shrink-0" id="btn-open-clear-modal">
+<span class="material-symbols-outlined text-[18px]">delete_sweep</span>
+<span class="font-label-md text-label-md font-semibold">Hapus semua</span>
+</button>
+</div>
+<div class="px-gutter py-space-sm overflow-x-auto no-scrollbar flex items-center gap-space-xs">
+<button class="filter-chip active flex items-center gap-1.5 px-4 h-9 rounded-full bg-secondary text-[#042f2e] shadow-sm flex-shrink-0 font-label-md text-label-md font-semibold transition-all active:scale-95 border border-secondary" data-filter="all">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">check</span>
+<span>Semua</span>
+</button>
+<button class="filter-chip flex items-center gap-1 px-4 h-9 rounded-full bg-surface-container-low text-on-surface-variant hover:text-on-surface flex-shrink-0 font-label-md text-label-md transition-all active:scale-95 border border-outline-variant/60" data-filter="hari-ini">
+<span>Hari Ini</span>
+<span class="ml-1 px-1.5 py-0.2 rounded-full bg-surface-container-high text-[10px] font-semibold text-on-surface">3</span>
+</button>
+<button class="filter-chip flex items-center gap-1 px-4 h-9 rounded-full bg-surface-container-low text-on-surface-variant hover:text-on-surface flex-shrink-0 font-label-md text-label-md transition-all active:scale-95 border border-outline-variant/60" data-filter="7-hari">
+<span>7 Hari Terakhir</span>
+<span class="ml-1 px-1.5 py-0.2 rounded-full bg-surface-container-high text-[10px] font-semibold text-on-surface">2</span>
+</button>
+<button class="filter-chip flex items-center gap-1 px-4 h-9 rounded-full bg-surface-container-low text-on-surface-variant hover:text-on-surface flex-shrink-0 font-label-md text-label-md transition-all active:scale-95 border border-outline-variant/60" data-filter="bulan-ini">
+<span>Bulan Ini</span>
+</button>
+</div>
+<div class="px-gutter pt-space-xs pb-space-md">
+<div class="p-space-sm rounded-DEFAULT bg-surface-container-low border border-outline-variant/50 flex items-center justify-between">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-8 h-8 rounded-full bg-[#1e2947] border border-primary-container/40 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary-container text-[18px]">insights</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Total Terindeks</span>
+<span class="font-headline-sm text-sm text-on-surface font-semibold truncate"><span id="history-counter">5</span> pencarian aktif tersimpan</span>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-[#133c3a] text-secondary font-label-sm text-label-sm border border-secondary/30">Sinkron</span>
+</div>
+</div>
+<div class="px-gutter flex flex-col gap-space-sm" id="search-history-container">
+<div class="search-item group p-space-md rounded-DEFAULT bg-surface-container-low border border-[#1e2a44] shadow-[0_4px_16px_rgba(0,0,0,0.25)] flex flex-col gap-2.5 transition-all hover:bg-surface-container-high/60" data-group="hari-ini" data-id="item-1">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-3 min-w-0">
+<div class="w-10 h-10 rounded-full bg-[#1e2947] border border-primary-container/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-primary-container text-[20px]">search</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-[15px] leading-snug text-on-surface font-semibold truncate">belajar membuat aplikasi android</span>
+<div class="flex items-center gap-1.5 flex-wrap mt-0.5">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm text-secondary font-medium">
+<span class="material-symbols-outlined text-[14px]">video_library</span>
+                25 hasil ditemukan
+              </span>
+<span class="text-outline text-[12px]">•</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Hari ini, 10:45</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-1.5 flex-shrink-0">
+<button aria-label="Cari lagi 'belajar membuat aplikasi android'" class="btn-rerun min-w-[36px] min-h-[36px] rounded-full bg-surface-container-high text-primary-container hover:text-white hover:bg-primary-container/30 border border-outline-variant/60 flex items-center justify-center active:scale-90 transition-transform" title="Cari Lagi">
+<span class="material-symbols-outlined text-[18px]">arrow_outward</span>
+</button>
+<button aria-label="Hapus dari riwayat" class="btn-delete-single min-w-[36px] min-h-[36px] rounded-full bg-surface-container-low text-on-surface-variant hover:text-red-300 hover:bg-error-container border border-outline-variant/40 flex items-center justify-center active:scale-90 transition-transform" title="Hapus item">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+<div class="flex items-center gap-2 pt-1 border-t-0">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-high/70 border border-outline-variant/40 px-2 py-0.5 rounded-full">Android Studio</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-high/70 border border-outline-variant/40 px-2 py-0.5 rounded-full">Kotlin 2.0</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-high/70 border border-outline-variant/40 px-2 py-0.5 rounded-full">+4 topik</span>
+</div>
+</div>
+<div class="search-item group p-space-md rounded-DEFAULT bg-surface-container-low border border-[#1e2a44] shadow-[0_4px_16px_rgba(0,0,0,0.25)] flex flex-col gap-2.5 transition-all hover:bg-surface-container-high/60" data-group="hari-ini" data-id="item-2">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-3 min-w-0">
+<div class="w-10 h-10 rounded-full bg-[#1e2947] border border-primary-container/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-primary-container text-[20px]">search</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-[15px] leading-snug text-on-surface font-semibold truncate">arsitektur jetpack compose</span>
+<div class="flex items-center gap-1.5 flex-wrap mt-0.5">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm text-secondary font-medium">
+<span class="material-symbols-outlined text-[14px]">video_library</span>
+                18 hasil ditemukan
+              </span>
+<span class="text-outline text-[12px]">•</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Hari ini, 08:12</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-1.5 flex-shrink-0">
+<button aria-label="Cari lagi 'arsitektur jetpack compose'" class="btn-rerun min-w-[36px] min-h-[36px] rounded-full bg-surface-container-high text-primary-container hover:text-white hover:bg-primary-container/30 border border-outline-variant/60 flex items-center justify-center active:scale-90 transition-transform" title="Cari Lagi">
+<span class="material-symbols-outlined text-[18px]">arrow_outward</span>
+</button>
+<button aria-label="Hapus dari riwayat" class="btn-delete-single min-w-[36px] min-h-[36px] rounded-full bg-surface-container-low text-on-surface-variant hover:text-red-300 hover:bg-error-container border border-outline-variant/40 flex items-center justify-center active:scale-90 transition-transform" title="Hapus item">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+<div class="flex items-center gap-2 pt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-high/70 border border-outline-variant/40 px-2 py-0.5 rounded-full">MVI</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-high/70 border border-outline-variant/40 px-2 py-0.5 rounded-full">StateFlow</span>
+</div>
+</div>
+<div class="search-item group p-space-md rounded-DEFAULT bg-surface-container-low border border-[#1e2a44] shadow-[0_4px_16px_rgba(0,0,0,0.25)] flex flex-col gap-2.5 transition-all hover:bg-surface-container-high/60" data-group="hari-ini" data-id="item-3">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-3 min-w-0">
+<div class="w-10 h-10 rounded-full bg-[#1e2947] border border-primary-container/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-primary-container text-[20px]">search</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-[15px] leading-snug text-on-surface font-semibold truncate">tips karir programmer 2024</span>
+<div class="flex items-center gap-1.5 flex-wrap mt-0.5">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm text-secondary font-medium">
+<span class="material-symbols-outlined text-[14px]">video_library</span>
+                10 hasil ditemukan
+              </span>
+<span class="text-outline text-[12px]">•</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Kemarin</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-1.5 flex-shrink-0">
+<button aria-label="Cari lagi 'tips karir programmer 2024'" class="btn-rerun min-w-[36px] min-h-[36px] rounded-full bg-surface-container-high text-primary-container hover:text-white hover:bg-primary-container/30 border border-outline-variant/60 flex items-center justify-center active:scale-90 transition-transform" title="Cari Lagi">
+<span class="material-symbols-outlined text-[18px]">arrow_outward</span>
+</button>
+<button aria-label="Hapus dari riwayat" class="btn-delete-single min-w-[36px] min-h-[36px] rounded-full bg-surface-container-low text-on-surface-variant hover:text-red-300 hover:bg-error-container border border-outline-variant/40 flex items-center justify-center active:scale-90 transition-transform" title="Hapus item">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+<div class="flex items-center gap-2 pt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-high/70 border border-outline-variant/40 px-2 py-0.5 rounded-full">Interview Tech</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-high/70 border border-outline-variant/40 px-2 py-0.5 rounded-full">Portofolio</span>
+</div>
+</div>
+<div class="search-item group p-space-md rounded-DEFAULT bg-surface-container-low border border-[#1e2a44] shadow-[0_4px_16px_rgba(0,0,0,0.25)] flex flex-col gap-2.5 transition-all hover:bg-surface-container-high/60" data-group="7-hari" data-id="item-4">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-3 min-w-0">
+<div class="w-10 h-10 rounded-full bg-[#1e2947] border border-primary-container/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-primary-container text-[20px]">search</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-[15px] leading-snug text-on-surface font-semibold truncate">figma design system tutorial</span>
+<div class="flex items-center gap-1.5 flex-wrap mt-0.5">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm text-secondary font-medium">
+<span class="material-symbols-outlined text-[14px]">video_library</span>
+                32 hasil ditemukan
+              </span>
+<span class="text-outline text-[12px]">•</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">3 hari lalu</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-1.5 flex-shrink-0">
+<button aria-label="Cari lagi 'figma design system tutorial'" class="btn-rerun min-w-[36px] min-h-[36px] rounded-full bg-surface-container-high text-primary-container hover:text-white hover:bg-primary-container/30 border border-outline-variant/60 flex items-center justify-center active:scale-90 transition-transform" title="Cari Lagi">
+<span class="material-symbols-outlined text-[18px]">arrow_outward</span>
+</button>
+<button aria-label="Hapus dari riwayat" class="btn-delete-single min-w-[36px] min-h-[36px] rounded-full bg-surface-container-low text-on-surface-variant hover:text-red-300 hover:bg-error-container border border-outline-variant/40 flex items-center justify-center active:scale-90 transition-transform" title="Hapus item">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+<div class="flex items-center gap-2 pt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-high/70 border border-outline-variant/40 px-2 py-0.5 rounded-full">Variables</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-high/70 border border-outline-variant/40 px-2 py-0.5 rounded-full">Auto Layout</span>
+</div>
+</div>
+<div class="search-item group p-space-md rounded-DEFAULT bg-surface-container-low border border-[#1e2a44] shadow-[0_4px_16px_rgba(0,0,0,0.25)] flex flex-col gap-2.5 transition-all hover:bg-surface-container-high/60" data-group="7-hari" data-id="item-5">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-start gap-3 min-w-0">
+<div class="w-10 h-10 rounded-full bg-[#1e2947] border border-primary-container/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-primary-container text-[20px]">search</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-[15px] leading-snug text-on-surface font-semibold truncate">react native vs flutter performa</span>
+<div class="flex items-center gap-1.5 flex-wrap mt-0.5">
+<span class="inline-flex items-center gap-1 font-body-sm text-body-sm text-secondary font-medium">
+<span class="material-symbols-outlined text-[14px]">video_library</span>
+                50 hasil ditemukan
+              </span>
+<span class="text-outline text-[12px]">•</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">12 Okt 2024</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-1.5 flex-shrink-0">
+<button aria-label="Cari lagi 'react native vs flutter performa'" class="btn-rerun min-w-[36px] min-h-[36px] rounded-full bg-surface-container-high text-primary-container hover:text-white hover:bg-primary-container/30 border border-outline-variant/60 flex items-center justify-center active:scale-90 transition-transform" title="Cari Lagi">
+<span class="material-symbols-outlined text-[18px]">arrow_outward</span>
+</button>
+<button aria-label="Hapus dari riwayat" class="btn-delete-single min-w-[36px] min-h-[36px] rounded-full bg-surface-container-low text-on-surface-variant hover:text-red-300 hover:bg-error-container border border-outline-variant/40 flex items-center justify-center active:scale-90 transition-transform" title="Hapus item">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+<div class="flex items-center gap-2 pt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-high/70 border border-outline-variant/40 px-2 py-0.5 rounded-full">Benchmark</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-high/70 border border-outline-variant/40 px-2 py-0.5 rounded-full">Hermes Engine</span>
+</div>
+</div>
+</div>
+<div class="hidden px-gutter py-space-xl flex flex-col items-center justify-center text-center" id="empty-state-preview">
+<div class="w-20 h-20 rounded-full bg-surface-container-high border border-outline-variant flex items-center justify-center text-on-surface-variant mb-space-md">
+<span class="material-symbols-outlined text-[36px]">history_toggle_off</span>
+</div>
+<h2 class="font-headline-sm text-lg text-on-surface font-semibold mb-1">Riwayat pencarian kosong</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xs mb-space-lg">Cari video untuk memulai pengindeksan topik dan bab favorit Anda.</p>
+<a class="inline-flex items-center justify-center gap-2 px-6 h-12 rounded-full bg-primary-container text-[#0f172a] font-label-lg text-label-lg font-bold shadow-md active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined text-[20px]">search</span>
+<span>Mulai Eksplorasi</span>
+</a>
+</div>
+<div class="px-gutter pt-space-lg pb-space-md">
+<div class="p-space-md rounded-DEFAULT bg-surface-container-low border border-outline-variant/50 flex items-start gap-3">
+<div class="w-9 h-9 rounded-full bg-[#133c3a] border border-secondary/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-secondary text-[20px]">lock</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-sm text-on-surface font-semibold">Privasi Terjaga</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Riwayat disimpan secara lokal di perangkat Anda untuk kenyamanan pencarian cepat.</p>
+</div>
+</div>
+</div>
+<div class="fixed inset-0 z-50 flex items-center justify-center p-gutter bg-black/75 backdrop-blur-md hidden opacity-0 transition-opacity duration-200" id="clear-modal">
+<div class="w-full max-w-sm rounded-lg bg-surface-container-low border border-outline-variant/60 p-space-lg shadow-2xl flex flex-col gap-space-md scale-95 transition-transform duration-200">
+<div class="w-12 h-12 rounded-full bg-error-container border border-red-900 text-on-error-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[24px]">delete_forever</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-lg text-on-surface font-bold">Hapus Semua Riwayat?</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1.5">Tindakan ini akan menghapus semua kata kunci pencarian yang tersimpan di perangkat Anda. Proses ini tidak dapat dibatalkan.</p>
+</div>
+<div class="flex items-center justify-end gap-space-sm pt-space-xs">
+<button class="px-5 h-10 rounded-full font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high active:scale-95 transition-transform" id="btn-cancel-clear">
+          Batal
+        </button>
+<button class="px-5 h-10 rounded-full bg-red-600 hover:bg-red-500 text-white font-label-lg text-label-lg font-semibold shadow-md active:scale-95 transition-transform" id="btn-confirm-clear">
+          Hapus Semua
+        </button>
+</div>
+</div>
+</div>
+<div class="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#1e2947] border border-secondary/40 text-on-surface font-body-sm text-body-sm shadow-xl pointer-events-none opacity-0 translate-y-3 transition-all duration-200" id="toast">
+<span class="material-symbols-outlined text-[18px] text-secondary">check_circle</span>
+<span id="toast-text">Riwayat pencarian diperbarui</span>
+</div>
+<script>
+    (() => {
+      const modal = document.getElementById('clear-modal');
+      const openBtn = document.getElementById('btn-open-clear-modal');
+      const cancelBtn = document.getElementById('btn-cancel-clear');
+      const confirmBtn = document.getElementById('btn-confirm-clear');
+      const container = document.getElementById('search-history-container');
+      const emptyState = document.getElementById('empty-state-preview');
+      const counterEl = document.getElementById('history-counter');
+      const toast = document.getElementById('toast');
+      const toastText = document.getElementById('toast-text');
+
+      const showToast = (message) => {
+        if (!toast) return;
+        toastText.textContent = message;
+        toast.classList.remove('opacity-0', 'translate-y-3');
+        toast.classList.add('opacity-100', 'translate-y-0');
+        setTimeout(() => {
+          toast.classList.add('opacity-0', 'translate-y-3');
+          toast.classList.remove('opacity-100', 'translate-y-0');
+        }, 2200);
+      };
+
+      const updateCount = () => {
+        const visibleItems = container.querySelectorAll('.search-item:not(.hidden)');
+        const totalItems = container.querySelectorAll('.search-item');
+        if (counterEl) {
+          counterEl.textContent = `${visibleItems.length}`;
+        }
+        if (totalItems.length === 0) {
+          container.classList.add('hidden');
+          emptyState.classList.remove('hidden');
+          if (openBtn) {
+            openBtn.setAttribute('disabled', 'true');
+            openBtn.classList.add('opacity-50', 'pointer-events-none');
+          }
+        }
+      };
+
+      const openModal = () => {
+        modal.classList.remove('hidden');
+        requestAnimationFrame(() => {
+          modal.classList.remove('opacity-0');
+          const inner = modal.querySelector('div');
+          if (inner) inner.classList.remove('scale-95');
+        });
+      };
+
+      const closeModal = () => {
+        modal.classList.add('opacity-0');
+        const inner = modal.querySelector('div');
+        if (inner) inner.classList.add('scale-95');
+        setTimeout(() => {
+          modal.classList.add('hidden');
+        }, 200);
+      };
+
+      if (openBtn) openBtn.addEventListener('click', openModal);
+      if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+      if (modal) {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) closeModal();
+        });
+      }
+
+      if (confirmBtn) {
+        confirmBtn.addEventListener('click', () => {
+          container.innerHTML = '';
+          closeModal();
+          updateCount();
+          showToast('Semua riwayat berhasil dibersihkan');
+        });
+      }
+
+      // Single item deletion
+      document.addEventListener('click', (e) => {
+        const delBtn = e.target.closest('.btn-delete-single');
+        if (delBtn) {
+          const item = delBtn.closest('.search-item');
+          if (item) {
+            item.style.transform = 'translateX(20px)';
+            item.style.opacity = '0';
+            setTimeout(() => {
+              item.remove();
+              updateCount();
+              showToast('Kata kunci dihapus dari riwayat');
+            }, 180);
+          }
+        }
+
+        const rerunBtn = e.target.closest('.btn-rerun');
+        if (rerunBtn) {
+          const item = rerunBtn.closest('.search-item');
+          const title = item ? item.querySelector('.font-headline-sm')?.textContent : 'pencarian';
+          showToast(`Mencari ulang: "${title}"`);
+        }
+      });
+
+      // Filter chips
+      const filterChips = document.querySelectorAll('.filter-chip');
+      filterChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          filterChips.forEach(c => {
+            c.classList.remove('bg-secondary', 'text-[#042f2e]', 'border-secondary', 'font-semibold');
+            c.classList.add('bg-surface-container-low', 'text-on-surface-variant', 'border-outline-variant/60');
+            const checkIcon = c.querySelector('.material-symbols-outlined');
+            if (checkIcon) checkIcon.remove();
+          });
+
+          chip.classList.remove('bg-surface-container-low', 'text-on-surface-variant', 'border-outline-variant/60');
+          chip.classList.add('bg-secondary', 'text-[#042f2e]', 'border-secondary', 'font-semibold');
+          
+          const iconSpan = document.createElement('span');
+          iconSpan.className = 'material-symbols-outlined text-[16px]';
+          iconSpan.style.fontVariationSettings = "'FILL' 1";
+          iconSpan.textContent = 'check';
+          chip.prepend(iconSpan);
+
+          const filterVal = chip.dataset.filter;
+          const items = container.querySelectorAll('.search-item');
+
+          items.forEach(it => {
+            if (filterVal === 'all') {
+              it.classList.remove('hidden');
+            } else if (filterVal === 'hari-ini') {
+              if (it.dataset.group === 'hari-ini') {
+                it.classList.remove('hidden');
+              } else {
+                it.classList.add('hidden');
+              }
+            } else if (filterVal === '7-hari') {
+              if (it.dataset.group === '7-hari') {
+                it.classList.remove('hidden');
+              } else {
+                it.classList.add('hidden');
+              }
+            } else if (filterVal === 'bulan-ini') {
+              it.classList.add('hidden');
+            }
+          });
+
+          updateCount();
+        });
+      });
+    })();
+  </script>
+</div></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-[#0b1326]/95 backdrop-blur-xl border-t border-[#1f293d]/80 shadow-[0_-8px_24px_rgba(0,0,0,0.5)]" data-active-classes="[&amp;_.nav-pill]:bg-primary-container [&amp;_.nav-icon]:text-on-primary-container [&amp;_.nav-icon]:font-variation-settings-'FILL'-1 [&amp;_.nav-label]:text-primary-container [&amp;_.nav-label]:font-label-md"><div class="flex justify-around items-center h-20 px-space-xs"><a class="group flex flex-col items-center justify-center min-w-[64px] min-h-[48px] py-1 gap-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="cari" href="#"><div class="nav-pill w-16 h-8 rounded-full flex items-center justify-center transition-all group-hover:bg-surface-container-high/50"><span class="material-symbols-outlined nav-icon text-on-surface-variant group-hover:text-on-surface text-[24px]">search</span></div><span class="nav-label font-label-sm text-label-sm tracking-wide text-on-surface-variant group-hover:text-on-surface">Cari</span></a><a class="group flex flex-col items-center justify-center min-w-[64px] min-h-[48px] py-1 gap-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="tersimpan" href="#"><div class="nav-pill w-16 h-8 rounded-full flex items-center justify-center transition-all group-hover:bg-surface-container-high/50"><span class="material-symbols-outlined nav-icon text-on-surface-variant group-hover:text-on-surface text-[24px]">bookmark</span></div><span class="nav-label font-label-sm text-label-sm tracking-wide text-on-surface-variant group-hover:text-on-surface">Tersimpan</span></a><a aria-current="page" class="group flex flex-col items-center justify-center min-w-[64px] min-h-[48px] py-1 gap-1 text-on-surface-variant transition-colors [&amp;_.nav-pill]:bg-primary-container [&amp;_.nav-icon]:text-on-primary-container [&amp;_.nav-icon]:font-variation-settings-'FILL'-1 [&amp;_.nav-label]:text-primary-container [&amp;_.nav-label]:font-label-md" data-path="riwayat" href="#"><div class="nav-pill w-16 h-8 rounded-full flex items-center justify-center transition-all shadow-md"><span class="material-symbols-outlined nav-icon text-on-primary-container text-[24px]">history</span></div><span class="nav-label font-label-sm text-label-sm tracking-wide text-primary-container font-semibold">Riwayat</span></a><a class="group flex flex-col items-center justify-center min-w-[64px] min-h-[48px] py-1 gap-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="pengaturan" href="#"><div class="nav-pill w-16 h-8 rounded-full flex items-center justify-center transition-all group-hover:bg-surface-container-high/50"><span class="material-symbols-outlined nav-icon text-on-surface-variant group-hover:text-on-surface text-[24px]">settings</span></div><span class="nav-label font-label-sm text-label-sm tracking-wide text-on-surface-variant group-hover:text-on-surface">Pengaturan</span></a></div></nav></body></html>
