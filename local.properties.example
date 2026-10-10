@@ -1,0 +1,20 @@
+## ==============================================================================
+## Template local.properties untuk YT Index
+## Salin file ini menjadi `local.properties` (sejajar dengan settings.gradle.kts)
+## File `local.properties` sudah masuk .gitignore dan TIDAK AKAN di-commit.
+## ==============================================================================
+
+# Lokasi Android SDK di komputer lokal
+# Windows: C:\\Users\\NAMA_USER\\AppData\\Local\\Android\\Sdk
+# macOS: /Users/NAMA_USER/Library/Android/sdk
+# Linux: /home/NAMA_USER/Android/Sdk
+sdk.dir=
+
+# YouTube Data API v3 Key (Google Cloud Console)
+# Batasi key ke package 'com.example.ytindex' dan SHA-1 debug Anda
+YOUTUBE_API_KEY=YOUR_YOUTUBE_API_KEY_HERE
+
+# Supabase Project Configuration
+# Diambil dari dashboard Supabase: Project Settings -> API
+SUPABASE_URL=https://your-project-id.supabase.co
+SUPABASE_ANON_KEY=your_supabase_anon_public_key_here

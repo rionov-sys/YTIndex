@@ -1,0 +1,51 @@
+# ==============================================================================
+# Git Ignore Configuration - YT Index (Android Kotlin + Compose & Supabase)
+# ==============================================================================
+
+# --- Android Studio & IDE ---
+.idea/
+*.iml
+.vscode/
+*.ipr
+*.iws
+out/
+
+# --- Gradle & Build Outputs ---
+.gradle/
+build/
+*/build/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# --- Local & Sensitive Environment Files (Wajib diabaikan) ---
+# Jangan pernah commit file credentials, API keys, atau Supabase keys
+local.properties
+.env
+.env.*
+!.env.example
+*.env
+*.env.*
+
+# --- Signing, Keystores & Keys (Wajib diabaikan) ---
+*.jks
+*.keystore
+*.key
+*.pem
+*.p12
+*.pfx
+*.pk8
+
+# --- Supabase Local Secrets & Temp ---
+supabase/.temp/
+*service_role*
+
+# --- OS Generated Files ---
+.DS_Store
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+
+# --- Profiler & Log Files ---
+*.hprof
+*.log

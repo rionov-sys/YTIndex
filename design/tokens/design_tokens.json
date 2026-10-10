@@ -1,0 +1,36 @@
+{
+  "name": "YT Index Design Tokens",
+  "version": "1.0.0",
+  "colors": {
+    "primary": "#006970",
+    "primaryContainer": "#14b8c4",
+    "onPrimary": "#ffffff",
+    "surface": "#f7f9fb",
+    "surfaceContainer": "#eceef0",
+    "onSurface": "#191c1e",
+    "outline": "#6c797b",
+    "error": "#ba1a1a"
+  },
+  "typography": {
+    "fontFamily": "Plus Jakarta Sans, Roboto, sans-serif",
+    "headline": {
+      "fontSize": "24sp",
+      "fontWeight": "Bold"
+    },
+    "body": {
+      "fontSize": "14sp",
+      "fontWeight": "Normal"
+    },
+    "label": {
+      "fontSize": "12sp",
+      "fontWeight": "Medium"
+    }
+  },
+  "dimensions": {
+    "paddingScreen": "16dp",
+    "spacingElements": "12dp",
+    "thumbnailAspectRatio": 1.777,
+    "cardElevation": "2dp",
+    "cardRadius": "12dp"
+  }
+}
