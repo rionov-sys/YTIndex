@@ -1,7 +1,6 @@
 package com.example.ytindex.ui.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,7 +15,7 @@ import com.example.ytindex.ui.auth.AuthScreen
 @Composable
 fun AppNavHost(
     navController: NavHostController = rememberNavController(),
-    authRepository: AuthRepository = remember { AuthRepository() }
+    authRepository: AuthRepository = AuthRepository()
 ) {
     val startDestination = if (authRepository.isAuthenticated) {
         Screen.Main.route

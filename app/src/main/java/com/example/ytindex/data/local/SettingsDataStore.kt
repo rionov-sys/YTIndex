@@ -30,6 +30,15 @@ class SettingsDataStore(private val context: Context) {
         private val KEY_DEFAULT_LIMIT = intPreferencesKey("default_result_limit")
         private val KEY_THEME_MODE = stringPreferencesKey("theme_mode")
         const val DEFAULT_LIMIT = 10
+
+        @Volatile
+        private var INSTANCE: SettingsDataStore? = null
+
+        fun getInstance(context: Context): SettingsDataStore {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: SettingsDataStore(context.applicationContext).also { INSTANCE = it }
+            }
+        }
     }
 
     val defaultResultLimit: Flow<Int> = context.dataStore.data.map { preferences ->

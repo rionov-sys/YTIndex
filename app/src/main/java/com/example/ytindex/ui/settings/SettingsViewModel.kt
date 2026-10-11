@@ -2,6 +2,7 @@ package com.example.ytindex.ui.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.ytindex.YTIndexApp
 import com.example.ytindex.data.local.AppThemeMode
 import com.example.ytindex.data.local.SettingsDataStore
 import com.example.ytindex.data.repository.AuthRepository
@@ -23,7 +24,7 @@ data class SettingsUiState(
  * ViewModel untuk mengelola konfigurasi preferensi pengguna dan aksi logout.
  */
 class SettingsViewModel(
-    private val settingsDataStore: SettingsDataStore,
+    private val settingsDataStore: SettingsDataStore? = YTIndexApp.instance?.settingsDataStore,
     private val authRepository: AuthRepository = AuthRepository()
 ) : ViewModel() {
 
@@ -36,14 +37,14 @@ class SettingsViewModel(
 
         // Pantau pengaturan default limit dari DataStore
         viewModelScope.launch {
-            settingsDataStore.defaultResultLimit.collect { limit ->
+            settingsDataStore?.defaultResultLimit?.collect { limit ->
                 _state.update { it.copy(defaultLimit = limit) }
             }
         }
 
         // Pantau tema dari DataStore
         viewModelScope.launch {
-            settingsDataStore.themeMode.collect { mode ->
+            settingsDataStore?.themeMode?.collect { mode ->
                 _state.update { it.copy(currentTheme = mode) }
             }
         }
@@ -51,13 +52,13 @@ class SettingsViewModel(
 
     fun onDefaultLimitChange(newLimit: Int) {
         viewModelScope.launch {
-            settingsDataStore.setDefaultResultLimit(newLimit)
+            settingsDataStore?.setDefaultResultLimit(newLimit)
         }
     }
 
     fun onThemeChange(mode: AppThemeMode) {
         viewModelScope.launch {
-            settingsDataStore.setThemeMode(mode)
+            settingsDataStore?.setThemeMode(mode)
         }
     }
 

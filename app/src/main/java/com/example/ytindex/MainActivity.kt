@@ -7,13 +7,14 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.activity.viewModels
 import com.example.ytindex.data.local.AppThemeMode
 import com.example.ytindex.data.local.CrashHandler
-import com.example.ytindex.data.local.SettingsDataStore
 import com.example.ytindex.data.remote.SupabaseClientProvider
 import com.example.ytindex.ui.components.ConfigMissingScreen
 import com.example.ytindex.ui.components.CrashReportScreen
 import com.example.ytindex.ui.navigation.AppNavHost
+import com.example.ytindex.ui.settings.SettingsViewModel
 import com.example.ytindex.ui.theme.YTIndexTheme
 
 /**
@@ -23,15 +24,14 @@ import com.example.ytindex.ui.theme.YTIndexTheme
  */
 class MainActivity : ComponentActivity() {
 
+    private val settingsViewModel: SettingsViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val settingsDataStore = SettingsDataStore(applicationContext)
-
         setContent {
-            val themeMode by settingsDataStore.themeMode.collectAsStateWithLifecycle(
-                initialValue = AppThemeMode.SYSTEM
-            )
+            val settingsState by settingsViewModel.state.collectAsStateWithLifecycle()
+            val themeMode = settingsState.currentTheme
 
             // 1. Cek apakah ada crash report dari peluncuran sebelumnya
             val savedCrashReport = remember {

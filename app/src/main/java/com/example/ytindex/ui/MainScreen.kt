@@ -10,9 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.ytindex.data.local.SettingsDataStore
 import com.example.ytindex.ui.bookmarks.BookmarksScreen
 import com.example.ytindex.ui.bookmarks.BookmarksViewModel
 import com.example.ytindex.ui.components.BottomNavBar
@@ -29,21 +27,13 @@ import com.example.ytindex.ui.settings.SettingsViewModel
  */
 @Composable
 fun MainScreen(
-    onLoggedOut: () -> Unit
+    onLoggedOut: () -> Unit,
+    searchVm: SearchViewModel = viewModel(),
+    bookmarksVm: BookmarksViewModel = viewModel(),
+    historyVm: HistoryViewModel = viewModel(),
+    settingsVm: SettingsViewModel = viewModel()
 ) {
-    val context = LocalContext.current
-    val settingsDataStore = rememberSaveable { SettingsDataStore(context) }
-
     var selectedTab by rememberSaveable { mutableStateOf(BottomNavTab.Search.route) }
-
-    val searchVm: SearchViewModel = viewModel {
-        SearchViewModel(settingsDataStore = settingsDataStore)
-    }
-    val bookmarksVm: BookmarksViewModel = viewModel()
-    val historyVm: HistoryViewModel = viewModel()
-    val settingsVm: SettingsViewModel = viewModel {
-        SettingsViewModel(settingsDataStore = settingsDataStore)
-    }
 
     Scaffold(
         bottomBar = {

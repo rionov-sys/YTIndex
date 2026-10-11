@@ -2,6 +2,7 @@ package com.example.ytindex.ui.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.ytindex.YTIndexApp
 import com.example.ytindex.data.VideoResult
 import com.example.ytindex.data.local.SettingsDataStore
 import com.example.ytindex.data.repository.BookmarkRepository
@@ -31,7 +32,7 @@ data class SearchUiState(
 class SearchViewModel(
     private val searchRepository: SearchRepository = SearchRepository(),
     private val bookmarkRepository: BookmarkRepository = BookmarkRepository(),
-    private val settingsDataStore: SettingsDataStore? = null
+    private val settingsDataStore: SettingsDataStore? = YTIndexApp.instance?.settingsDataStore
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SearchUiState())

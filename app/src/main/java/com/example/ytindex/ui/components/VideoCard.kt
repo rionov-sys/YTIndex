@@ -58,8 +58,16 @@ fun VideoCard(
         modifier = modifier
             .fillMaxWidth()
             .clickable {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(video.url))
-                context.startActivity(intent)
+                try {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(video.url))
+                    context.startActivity(intent)
+                } catch (e: Exception) {
+                    android.widget.Toast.makeText(
+                        context,
+                        "Tidak dapat membuka tautan video: ${e.message}",
+                        android.widget.Toast.LENGTH_SHORT
+                    ).show()
+                }
             },
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
