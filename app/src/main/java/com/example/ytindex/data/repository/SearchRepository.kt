@@ -7,7 +7,6 @@ import com.example.ytindex.data.remote.SupabaseClientProvider
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.functions.Functions
 import io.github.jan.supabase.functions.functions
-
 import io.ktor.client.statement.bodyAsText
 import kotlinx.serialization.json.Json
 
@@ -26,10 +25,16 @@ private val searchJson = Json {
  * Menggunakan token sesi pengguna aktif dan menangani mapping error kuota YouTube API.
  */
 class SearchRepository(
-    private val client: SupabaseClient = SupabaseClientProvider.client
+    private val clientSupplier: () -> SupabaseClient? = { SupabaseClientProvider.getClientOrNull() }
 ) {
-    private val functions: Functions
-        get() = client.functions
+    constructor(client: SupabaseClient) : this({ client })
+
+    private val functions: Functions?
+        get() = try {
+            clientSupplier()?.functions
+        } catch (e: Throwable) {
+            null
+        }
 
     /**
      * Memanggil edge function "youtube-search" untuk mengambil daftar video.
@@ -43,9 +48,12 @@ class SearchRepository(
         require(cleanQuery.isNotBlank()) { "Kata kunci pencarian tidak boleh kosong." }
         val clampedLimit = limit.coerceIn(1, 50)
 
+        val activeFunctions = functions
+            ?: error("Layanan pencarian belum siap. Pastikan konfigurasi Supabase telah diisi.")
+
         try {
             val requestBody = SearchFunctionRequest(query = cleanQuery, limit = clampedLimit)
-            val response = functions.invoke("youtube-search", requestBody)
+            val response = activeFunctions.invoke("youtube-search", requestBody)
             val bodyString = response.bodyAsText()
             val parsed = searchJson.decodeFromString<SearchFunctionResponse>(bodyString)
             return parsed.items

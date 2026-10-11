@@ -13,20 +13,31 @@ import io.github.jan.supabase.postgrest.query.Order
  * Aturan Row Level Security (RLS) otomatis memastikan pengguna hanya mengakses datanya sendiri.
  */
 class BookmarkRepository(
-    private val client: SupabaseClient = SupabaseClientProvider.client
+    private val clientSupplier: () -> SupabaseClient? = { SupabaseClientProvider.getClientOrNull() }
 ) {
-    private val postgrest: Postgrest
-        get() = client.postgrest
+    constructor(client: SupabaseClient) : this({ client })
+
+    private val postgrest: Postgrest?
+        get() = try {
+            clientSupplier()?.postgrest
+        } catch (e: Throwable) {
+            null
+        }
 
     /**
      * Mengambil seluruh daftar bookmark milik pengguna saat ini, terurut dari yang terbaru.
      */
     suspend fun getBookmarks(): List<BookmarkDto> {
-        return postgrest.from("bookmarks")
-            .select {
-                order(column = "created_at", order = Order.DESCENDING)
-            }
-            .decodeList<BookmarkDto>()
+        val client = postgrest ?: return emptyList()
+        return try {
+            client.from("bookmarks")
+                .select {
+                    order(column = "created_at", order = Order.DESCENDING)
+                }
+                .decodeList<BookmarkDto>()
+        } catch (e: Throwable) {
+            emptyList()
+        }
     }
 
     /**
@@ -41,6 +52,7 @@ class BookmarkRepository(
      * Menambahkan video ke daftar bookmark pengguna.
      */
     suspend fun addBookmark(video: VideoResult): Result<Unit> = runCatching {
+        val client = postgrest ?: error("Layanan database belum siap.")
         val dto = BookmarkDto(
             videoId = video.videoId,
             title = video.title,
@@ -49,14 +61,15 @@ class BookmarkRepository(
             publishedAt = video.publishedAt,
             url = video.url
         )
-        postgrest.from("bookmarks").insert(dto)
+        client.from("bookmarks").insert(dto)
     }
 
     /**
      * Menghapus video dari bookmark berdasarkan ID video.
      */
     suspend fun removeBookmark(videoId: String): Result<Unit> = runCatching {
-        postgrest.from("bookmarks").delete {
+        val client = postgrest ?: error("Layanan database belum siap.")
+        client.from("bookmarks").delete {
             filter {
                 eq("video_id", videoId)
             }

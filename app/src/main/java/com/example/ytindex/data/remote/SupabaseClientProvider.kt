@@ -11,33 +11,65 @@ import io.ktor.client.engine.okhttp.OkHttp
 
 /**
  * Singleton provider untuk instance [SupabaseClient] di seluruh aplikasi.
- * Membaca URL dan Anon Key dari [BuildConfig], mengonfigurasi engine OkHttp,
- * serta menginstal plugin Auth, Postgrest, dan Functions.
+ * Dibuat secara lazy dan tidak pernah melempar crash saat inisialisasi startup.
  */
 object SupabaseClientProvider {
 
     private const val TAG = "SupabaseClientProvider"
 
-    val client: SupabaseClient by lazy {
-        require(BuildConfig.SUPABASE_URL.isNotBlank() && BuildConfig.SUPABASE_ANON_KEY.isNotBlank()) {
-            "SUPABASE_URL dan SUPABASE_ANON_KEY tidak boleh kosong. Periksa file local.properties."
+    /**
+     * Memeriksa apakah konfigurasi Supabase valid:
+     * - SUPABASE_URL tidak kosong dan diawali dengan "https://"
+     * - SUPABASE_ANON_KEY tidak kosong
+     */
+    fun isConfigurationValid(): Boolean {
+        val url = BuildConfig.SUPABASE_URL.trim()
+        val key = BuildConfig.SUPABASE_ANON_KEY.trim()
+        return url.isNotBlank() && url.startsWith("https://", ignoreCase = true) && key.isNotBlank()
+    }
+
+    @Volatile
+    private var instance: SupabaseClient? = null
+
+    /**
+     * Mengembalikan instance [SupabaseClient] jika konfigurasi valid dan inisialisasi berhasil,
+     * atau null jika belum valid atau terjadi error. Tidak melempar unhandled crash.
+     */
+    fun getClientOrNull(): SupabaseClient? {
+        if (!isConfigurationValid()) {
+            Log.w(TAG, "Konfigurasi Supabase belum valid: URL harus diawali https:// dan Anon Key tidak boleh kosong.")
+            return null
         }
 
-        try {
-            Log.d(TAG, "Inisialisasi SupabaseClient...")
-            createSupabaseClient(
-                supabaseUrl = BuildConfig.SUPABASE_URL,
-                supabaseKey = BuildConfig.SUPABASE_ANON_KEY
-            ) {
-                httpEngine = OkHttp.create()
+        instance?.let { return it }
 
-                install(Auth)
-                install(Postgrest)
-                install(Functions)
+        return synchronized(this) {
+            instance?.let { return it }
+
+            try {
+                Log.d(TAG, "Membangun SupabaseClient secara lazy...")
+                val created = createSupabaseClient(
+                    supabaseUrl = BuildConfig.SUPABASE_URL.trim(),
+                    supabaseKey = BuildConfig.SUPABASE_ANON_KEY.trim()
+                ) {
+                    httpEngine = OkHttp.create()
+
+                    install(Auth)
+                    install(Postgrest)
+                    install(Functions)
+                }
+                instance = created
+                created
+            } catch (t: Throwable) {
+                Log.e(TAG, "Gagal membuat SupabaseClient: ${t.message}", t)
+                null
             }
-        } catch (t: Throwable) {
-            Log.e(TAG, "Gagal membuat SupabaseClient: ${t.message}", t)
-            throw t
         }
     }
+
+    /**
+     * Properti accessor yang mengembalikan instance [SupabaseClient].
+     */
+    val client: SupabaseClient
+        get() = getClientOrNull() ?: error("SupabaseClient belum siap atau konfigurasi belum valid.")
 }

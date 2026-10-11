@@ -7,19 +7,29 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization")
 }
 
-// Rahasia dibaca dari environment variable (GitHub Actions / CI) atau local.properties (local dev).
-// File local.properties TIDAK ikut di-commit ke git.
+// Rahasia dibaca dari local.properties (local dev) terlebih dahulu,
+// lalu dari environment variable (GitHub Actions / CI) sebagai fallback.
 val localProps = Properties().apply {
     val f = rootProject.file("local.properties")
     if (f.exists()) f.inputStream().use { load(it) }
 }
 
-fun getSecret(key: String, default: String = ""): String {
-    return System.getenv(key) ?: localProps.getProperty(key, default)
+fun getSecret(key: String): String {
+    val fromFile = localProps.getProperty(key)?.trim()
+    val fromEnv = System.getenv(key)?.trim()
+    val raw = when {
+        !fromFile.isNullOrBlank() -> fromFile
+        !fromEnv.isNullOrBlank() -> fromEnv
+        else -> ""
+    }
+    return raw.removeSurrounding("\"").removeSurrounding("'").trim()
 }
 
 val supabaseUrl: String = getSecret("SUPABASE_URL")
 val supabaseAnonKey: String = getSecret("SUPABASE_ANON_KEY")
+
+logger.lifecycle("YTIndex build: SUPABASE_URL configured = ${supabaseUrl.isNotBlank()}")
+logger.lifecycle("YTIndex build: SUPABASE_ANON_KEY configured = ${supabaseAnonKey.isNotBlank()}")
 
 android {
     namespace = "com.example.ytindex"
