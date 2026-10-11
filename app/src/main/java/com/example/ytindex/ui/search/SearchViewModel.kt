@@ -41,9 +41,12 @@ class SearchViewModel(
     init {
         // Ambil batas hasil pencarian default dari SettingsDataStore jika tersedia
         viewModelScope.launch {
-            if (settingsDataStore != null) {
-                val defaultLimit = settingsDataStore.defaultResultLimit.first()
-                _state.update { it.copy(limit = defaultLimit) }
+            runCatching {
+                settingsDataStore?.defaultResultLimit?.first()
+            }.onSuccess { defaultLimit ->
+                if (defaultLimit != null) {
+                    _state.update { it.copy(limit = defaultLimit) }
+                }
             }
             loadBookmarkedIds()
         }

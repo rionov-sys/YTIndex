@@ -15,48 +15,50 @@ import androidx.compose.ui.graphics.vector.ImageVector
  * Definisi rute layar dan navigasi di dalam aplikasi YT Index.
  */
 sealed class Screen(val route: String) {
-    object Auth : Screen("auth")
-    object Main : Screen("main")
+    data object Auth : Screen("auth")
+    data object Main : Screen("main")
 }
 
 /**
  * Definisi tab utama pada bilah navigasi bawah (Bottom Navigation Bar).
+ * Menggunakan enum class untuk mencegah masalah circular static initialization.
  */
-sealed class BottomNavTab(
+enum class BottomNavTab(
     val route: String,
     val title: String,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector
 ) {
-    object Search : BottomNavTab(
+    Search(
         route = "tab_search",
         title = "Cari",
         selectedIcon = Icons.Filled.Search,
         unselectedIcon = Icons.Outlined.Search
-    )
+    ),
 
-    object Bookmarks : BottomNavTab(
+    Bookmarks(
         route = "tab_bookmarks",
         title = "Tersimpan",
         selectedIcon = Icons.Filled.Bookmark,
         unselectedIcon = Icons.Outlined.BookmarkBorder
-    )
+    ),
 
-    object History : BottomNavTab(
+    History(
         route = "tab_history",
         title = "Riwayat",
         selectedIcon = Icons.Filled.History,
         unselectedIcon = Icons.Outlined.History
-    )
+    ),
 
-    object Settings : BottomNavTab(
+    Settings(
         route = "tab_settings",
         title = "Pengaturan",
         selectedIcon = Icons.Filled.Settings,
         unselectedIcon = Icons.Outlined.Settings
-    )
+    );
 
     companion object {
-        val items = listOf(Search, Bookmarks, History, Settings)
+        val items: List<BottomNavTab>
+            get() = entries
     }
 }

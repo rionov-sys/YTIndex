@@ -9,6 +9,9 @@ import io.github.jan.supabase.functions.Functions
 import io.github.jan.supabase.functions.functions
 import io.ktor.client.statement.bodyAsText
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonPrimitive
 
 /**
  * Pengecualian khusus saat kuota harian YouTube Data API telah habis (HTTP 429).
@@ -55,6 +58,19 @@ class SearchRepository(
             val requestBody = SearchFunctionRequest(query = cleanQuery, limit = clampedLimit)
             val response = activeFunctions.invoke("youtube-search", requestBody)
             val bodyString = response.bodyAsText()
+
+            // Periksa apakah respons mengembalikan pesan error dari Edge Function
+            val jsonElement = runCatching { searchJson.parseToJsonElement(bodyString) }.getOrNull()
+            if (jsonElement is JsonObject && jsonElement.containsKey("error")) {
+                val errorMsg = jsonElement["error"]?.jsonPrimitive?.contentOrNull
+                val detail = jsonElement["detail"]?.jsonPrimitive?.contentOrNull
+                val fullMsg = if (!detail.isNullOrBlank()) "$errorMsg ($detail)" else (errorMsg ?: "Gagal memproses pencarian.")
+                if (fullMsg.contains("quotaExceeded", ignoreCase = true) || fullMsg.contains("429")) {
+                    throw QuotaExceededException("Batas kuota harian YouTube Data API telah tercapai (quotaExceeded). Silakan coba lagi besok.")
+                }
+                error(fullMsg)
+            }
+
             val parsed = searchJson.decodeFromString<SearchFunctionResponse>(bodyString)
             return parsed.items
         } catch (e: Exception) {

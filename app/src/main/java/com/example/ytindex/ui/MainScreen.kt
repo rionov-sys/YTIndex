@@ -75,6 +75,10 @@ fun MainScreen(
                         onLogoutSuccess = onLoggedOut
                     )
                 }
+
+                else -> {
+                    SearchScreen(vm = searchVm)
+                }
             }
         }
     }

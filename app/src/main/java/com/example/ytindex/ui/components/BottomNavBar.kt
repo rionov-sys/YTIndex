@@ -19,7 +19,7 @@ import com.example.ytindex.ui.navigation.BottomNavTab
  */
 @Composable
 fun BottomNavBar(
-    currentRoute: String,
+    currentRoute: String?,
     onTabSelected: (BottomNavTab) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -28,7 +28,7 @@ fun BottomNavBar(
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
         tonalElevation = 4.dp
     ) {
-        BottomNavTab.items.forEach { tab ->
+        BottomNavTab.entries.forEach { tab ->
             val isSelected = currentRoute == tab.route
 
             NavigationBarItem(
